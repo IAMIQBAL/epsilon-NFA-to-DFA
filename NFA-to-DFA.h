@@ -2,6 +2,7 @@
 #include <string>
 #include <bits/stdc++.h>
 #include <math.h>
+#include <fstream>
 
 class NFAtoDFA {
 private:
@@ -67,5 +68,24 @@ public:
             }
             std::cout << std::endl;
         }
+    }
+
+    void writeToDotFile(){
+        int flag = 0;
+        std::ofstream file;
+        file.open("fa2.dot", std::ios::out);
+        file << "digraph finite_state_machine {\nrankdir=LR; \nsize=\"8,5\" \nnode [shape = doublecircle]; \nnode [shape = circle];\n";
+
+        for (int i = 0; i < dfaNewStates.size(); i++){
+            for (int j = 0; j < transitions - 1; j++){
+                file << newStates[i] << "->";
+                file << DFA[i][j] << "[label = " << flag << "];\n";
+                flag = 1;
+            }
+            flag = 0;
+        }
+        
+        file << "}";
+        file.close();
     }
 };

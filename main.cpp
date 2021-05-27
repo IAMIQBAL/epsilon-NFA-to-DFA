@@ -1,37 +1,47 @@
 #include <iostream>
 #include <vector>
+
+#include <unistd.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+
 #include "eps-NFA-to-DFA.h"
 #include "NFA-to-DFA.h"
-using namespace std;
 
 int main(){
 
     int states, transitions;
 
-    cout << "Enter No of States: ";
-    cin >> states;
-    cout << "Enter No of Transitions: ";
-    cin >> transitions;
+    std::cout << "Enter No of States: ";
+    std::cin >> states;
+    std::cout << "Enter No of Transitions: ";
+    std::cin >> transitions;
 
     eNFAtoNFA n1(states, transitions);
 
-    cout << "Enter Transition Matrix: ";
+    std::cout << "Enter Transition Matrix: ";
     n1.setENFA();
     n1.getENFA();
 
-    cout << "-------------------" << endl;
+    std::cout << "-------------------" << std::endl;
 
     n1.getStates();
     n1.getTransition();
 
-    cout << "NFA: " << endl;
+    std::cout << "NFA: " << std::endl;
     n1.convert();
     n1.printNFA();
 
     NFAtoDFA d1(states, transitions);
     d1.convert(n1.getTransitionsMatrix(), n1.getMapToTransitions(), n1.getNFA());
-    cout << "\nDFA" << endl;
+    std::cout << "\nDFA" << std::endl;
     d1.getDFA();
+    d1.writeToDotFile();
+
+    if (!fork()){
+        execlp("dot", "dot", "-Tpng", "fa.dot", "-o", "dp.png", (char *)NULL);
+        exit(0);
+    }
 
     return 0;
 }
