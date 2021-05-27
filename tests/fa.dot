@@ -1,0 +1,14 @@
+digraph finite_state_machine {
+rankdir=LR; 
+size="8,5" 
+node [shape = doublecircle]; 
+node [shape = circle];
+ABF->FCD[label = 0];
+ABF->CD[label = 1];
+FCD->EBF[label = 0];
+FCD->ABF[label = 1];
+CD->EBF[label = 0];
+CD->ABF[label = 1];
+EBF->ABF[label = 0];
+EBF->CD[label = 1];
+}
