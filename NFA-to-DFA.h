@@ -11,12 +11,13 @@ private:
     std::string *newStates;
     std::map<std::string, int> dfaNewStates;
     std::vector<char> indStates;
+    int aloc;
 
 public:
     NFAtoDFA(int states, int transitions){
         this->states = states;
         this->transitions = transitions;
-        int aloc = pow(2, this->states);
+        aloc = pow(2, this->states);
         newStates = new std::string[aloc];
     }
 
@@ -28,7 +29,7 @@ public:
         int last = 1;
         while (first < last){
             for(int i = 0; i < transitions - 1; i++){
-                for(int j = 0; j< newStates[first].length(); j++){
+                for(int j = 0; j < newStates[first].length(); j++){
                     if(matrix[mapToTransitions[newStates[first][j]]][i][0] != '0'){
                         for(int k = 0; k < states; k++){
                             if(matrix[mapToTransitions[newStates[first][j]]][i][k] != '0'){
@@ -62,19 +63,31 @@ public:
 
     void getDFA(){
         for (int i = 0; i < dfaNewStates.size(); i++){
-            std::cout << newStates[i] << " ---> ";
+            std::cout << newStates[i] << " <---> < ";
             for (int j = 0; j < transitions - 1; j++){
-                std::cout << DFA[i][j] << " | ";
+                std::cout << DFA[i][j] << " || ";
             }
+            std::cout << " >";
             std::cout << std::endl;
         }
     }
 
-    void writeToDotFile(){
+    void writeToDotFile(std::vector<char> finalState){
         int flag = 0;
         std::ofstream file;
-        file.open("fa2.dot", std::ios::out);
-        file << "digraph finite_state_machine {\nrankdir=LR; \nsize=\"8,5\" \nnode [shape = doublecircle]; \nnode [shape = circle];\n";
+        file.open("tests/fa.dot", std::ios::out);
+        file << "digraph finite_state_machine {\nrankdir=LR; \nsize=\"8,5\" \nnode [shape = doublecircle];";
+        std::cout << "Final States in DFA: ";
+        for (int i = 0; i < finalState.size(); i++){
+            for (int j = 0; j < dfaNewStates.size(); j++){
+                if (newStates[j].find(finalState[i]) != std::string::npos){
+                    std::cout << newStates[j] << ", ";
+                    file << newStates[j] << " ";
+                }
+            }
+        }
+        std::cout << std::endl;
+        file << ";\nnode [shape = circle];\n";
 
         for (int i = 0; i < dfaNewStates.size(); i++){
             for (int j = 0; j < transitions - 1; j++){

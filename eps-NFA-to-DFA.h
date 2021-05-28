@@ -10,6 +10,7 @@ private:
     std::map<int, std::string> mapToStates;
     std::map<char, int> mapToTransitions;
     std::map<int, std::string> result;
+    std::vector<char> finalStates;
 
 public:
     eNFAtoNFA(int states, int transitions){
@@ -48,14 +49,29 @@ public:
 
     void getENFA(){
         for (int i = 0; i < states; i++){
+            std::cout << "< ";
             for (int j = 0; j < transitions; j++){
                 for (int k = 0; k < states; k++){
                     std::cout << matrix[i][j][k] << " ";
                 }
-                std::cout << " | ";
+                std::cout << "> <";
             }
+            std::cout << " >";
             std::cout << std::endl;
         }
+    }
+
+    void setFinalStates(){
+        char fSt;
+        std::cin >> fSt;
+        while (fSt != 'q'){
+            finalStates.push_back(fSt);
+            std::cin >> fSt;
+        }
+    }
+
+    std::vector<char> getFinalStates(){
+        return finalStates;
     }
 
     void convert(){
@@ -85,7 +101,7 @@ public:
 
     void printNFA(){
         for (int i = 0; i < states; i++){
-            std::cout << mapToStates[i] << " ---> " << result[i] << std::endl;
+            std::cout << mapToStates[i] << " <---> " << "< " << result[i] << " >" << std::endl;
         }
     }
 

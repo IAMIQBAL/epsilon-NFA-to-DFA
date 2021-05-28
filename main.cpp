@@ -23,6 +23,9 @@ int main(){
     n1.setENFA();
     n1.getENFA();
 
+    std::cout << "Enter Final States: ";
+    n1.setFinalStates();
+
     std::cout << "-------------------" << std::endl;
 
     n1.getStates();
@@ -36,10 +39,10 @@ int main(){
     d1.convert(n1.getTransitionsMatrix(), n1.getMapToTransitions(), n1.getNFA());
     std::cout << "\nDFA" << std::endl;
     d1.getDFA();
-    d1.writeToDotFile();
+    d1.writeToDotFile(n1.getFinalStates());
 
     if (!fork()){
-        execlp("dot", "dot", "-Tpng", "fa.dot", "-o", "dp.png", (char *)NULL);
+        execlp("dot", "dot", "-Tpng", "tests/fa.dot", "-o", "tests/dp.png", (char *)NULL);
         exit(0);
     }
 
