@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
-#include "eps-NFA-to-DFA.h"
+#include "eNFA-to-NFA.h"
 #include "NFA-to-DFA.h"
 
 int main(){
